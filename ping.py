@@ -7,7 +7,7 @@ from time import localtime, strftime, sleep
 
 max_rtt = 100 #any round-trip-time greater than this (in ms) will be reported
 hostname = "google.de"
-pattern = re.compile('time=(?P<ms>[\d]+\.[\d]+) ms')
+pattern = re.compile('time=(?P<ms>\S) ms')
 logfile = "ping.log"
 interval = 5 #ping interval in seconds
 
@@ -43,10 +43,6 @@ def ping():
 			if rtt > max_rtt:
 				report = True
 				cause = "High RTT (" + str(rtt) + " ms)"
-		else:
-			#don't know yet why this occurs, but it happens
-			report = True
-			cause = "Unknown Problem"
 
 	except subprocess.CalledProcessError as e:
 		#non-zero return code (server not reachable)
