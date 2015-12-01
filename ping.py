@@ -38,10 +38,15 @@ def ping():
 
 		#ping successful, did it take too long?
 		result = pattern.search(out)
-		rtt = float(result.group("ms"))
-		if rtt > max_rtt:
+		if (result is not None):
+			rtt = float(result.group("ms"))
+			if rtt > max_rtt:
+				report = True
+				cause = "High RTT (" + str(rtt) + " ms)"
+		else:
+			#don't know yet why this occurs, but it happens
 			report = True
-			cause = "High RTT (" + str(rtt) + " ms)"
+			cause = "Unknown Problem"
 
 	except subprocess.CalledProcessError as e:
 		#non-zero return code (server not reachable)
